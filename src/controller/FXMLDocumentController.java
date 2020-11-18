@@ -203,7 +203,10 @@ public class FXMLDocumentController implements Initializable {
         System.out.println("You clicked me!");
         label.setText("Hello World!");
     }
-
+    
+    @FXML
+    void search(ActionEvent event) {
+    }
 
     //EntityManager taken from class demo
     //Database manager
