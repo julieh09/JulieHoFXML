@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -97,6 +98,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TableColumn<Bio, String> userMinor;
     
+    //code taken from class demo
     private ObservableList<Bio> bioData;
     public void setTableData(List<Bio> userList) {
         bioData = FXCollections.observableArrayList(); 
@@ -164,6 +166,35 @@ public class FXMLDocumentController implements Initializable {
         DetailedModelViewController detailedControlled = loader.getController();
         detailedControlled.initData(selectedUser);
         Stage stage = new Stage();
+        stage.setScene(tableViewScene);
+        stage.show();
+        }
+    }
+    
+    @FXML         
+    void showBioInPlace(ActionEvent event) throws IOException {
+        System.out.println("clicked");
+        if (userTable.getSelectionModel().isEmpty()) { 
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information Dialog Box");
+            alert.setHeaderText("Error occured. Please try again");
+            alert.setContentText("User not selected");
+            alert.showAndWait(); 
+        } 
+        else { 
+        Bio selectedUser = userTable.getSelectionModel().getSelectedItem();
+        // fxml loader
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/DetailedModelView.fxml"));
+        // load the ui elements
+        Parent detailedModelView = loader.load();
+        // load the scene
+        Scene tableViewScene = new Scene(detailedModelView);
+        //access the detailedControlled and call a method
+        DetailedModelViewController detailedControlled = loader.getController();
+        detailedControlled.initData(selectedUser);
+        Scene currentScene = ((Node) event.getSource()).getScene();
+        detailedControlled.setPreviousScene(currentScene);
+        Stage stage = (Stage) currentScene.getWindow();
         stage.setScene(tableViewScene);
         stage.show();
         }

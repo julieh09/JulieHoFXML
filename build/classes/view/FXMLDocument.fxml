@@ -39,6 +39,7 @@
       <TextField fx:id="searchStudyField" layoutX="110.0" layoutY="213.0" prefHeight="27.0" prefWidth="219.0" promptText="Enter  input" />
       <Line endX="410.5" layoutX="67.0" layoutY="161.0" startX="-50.5" />
       <Button fx:id="advancedSearch" layoutX="292.0" layoutY="251.0" mnemonicParsing="false" onAction="#searchBySchoolyearAdvanced" text="Advanced Search By School Year" />
-      <Button fx:id="showBio" layoutX="397.0" layoutY="578.0" mnemonicParsing="false" onAction="#showBio" text="Show Details" />
+      <Button fx:id="showBio" layoutX="392.0" layoutY="578.0" mnemonicParsing="false" onAction="#showBio" text="Show Details" />
+      <Button fx:id="showBio1" layoutX="246.0" layoutY="578.0" mnemonicParsing="false" onAction="#showBioInPlace" text="Show Details in-Place" />
     </children>
 </AnchorPane>
