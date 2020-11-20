@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="492.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DetailedModelViewController">
+   <children>
+      <Text layoutX="80.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Detailed Model View">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Text>
+      <Button fx:id="backButton" layoutX="24.0" layoutY="46.0" mnemonicParsing="false" onAction="#back" text="Back" />
+      <Label fx:id="labelName" layoutX="28.0" layoutY="310.0" text="Name:" />
+      <Label fx:id="labelAge" layoutX="28.0" layoutY="334.0" text="Age:" />
+      <Label fx:id="labelSchoolyear" layoutX="26.0" layoutY="359.0" text="School year:" />
+      <Label fx:id="labelMajor" layoutX="28.0" layoutY="383.0" text="Major:" />
+      <Label fx:id="labelMinor" layoutX="29.0" layoutY="410.0" text="Minor:" />
+      <ImageView fx:id="image" fitHeight="189.0" fitWidth="217.0" layoutX="65.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>

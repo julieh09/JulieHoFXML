@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Bio.findBySchoolyear", query = "SELECT b FROM Bio b WHERE b.schoolyear = :schoolyear")
     , @NamedQuery(name = "Bio.findByMajor", query = "SELECT b FROM Bio b WHERE b.major = :major")
     , @NamedQuery(name = "Bio.findByNameAndAge", query = "SELECT b FROM Bio b WHERE b.name = :name AND b.age = :age")
+    , @NamedQuery(name = "Bio.findBySchoolyearAdvanced", query = "SELECT b FROM Bio b WHERE b.schoolyear = :schoolyear")
     , @NamedQuery(name = "Bio.findByMinor", query = "SELECT b FROM Bio b WHERE b.minor = :minor")})
 
 
