@@ -107,6 +107,7 @@ public class FXMLDocumentController implements Initializable {
         });
         userTable.setItems(bioData);
         userTable.refresh();
+        
     }
     
     @FXML
@@ -268,7 +269,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     void readUserbio(ActionEvent event) {
-
+        readAll(); 
     }
     
     
