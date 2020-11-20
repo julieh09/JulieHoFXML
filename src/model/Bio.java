@@ -62,12 +62,14 @@ public class Bio implements Serializable {
         this.id = id;
     }
 
-    public Bio(Integer id, String name, int age, String schoolyear, String major) {
+    public Bio(Integer id, String name, int age, String schoolyear, String major, String minor) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.schoolyear = schoolyear;
         this.major = major;
+        this.minor = minor;
+       
     }
 
     public Integer getId() {
