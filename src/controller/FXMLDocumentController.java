@@ -9,11 +9,20 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
@@ -48,8 +57,82 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private Button findstudy;
-
     
+    @FXML
+    private Button searchButton;
+
+    @FXML
+    private TextField searchStudyField;
+    
+    @FXML
+    private Button advancedSearch;
+
+
+    @FXML
+    private TableView<Bio> userTable;
+
+    @FXML
+    private TableColumn<Bio, Integer> userID;
+
+    @FXML
+    private TableColumn<Bio, String> userName;
+
+    @FXML
+    private TableColumn<Bio, Integer> userAge;
+
+    @FXML
+    private TableColumn<Bio, String> userSchoolyear;
+
+    @FXML
+    private TableColumn<Bio, String> userMajor;
+
+    @FXML
+    private TableColumn<Bio, String> userMinor;
+    
+    private ObservableList<Bio> bioData;
+    public void setTableData(List<Bio> userList) {
+        bioData = FXCollections.observableArrayList(); 
+        userList.forEach(x -> { 
+            bioData.add(x);
+        });
+        userTable.setItems(bioData);
+        userTable.refresh();
+    }
+    
+    @FXML
+    void searchByStudy(ActionEvent event) {
+        System.out.println("Clicked");
+        String major = searchStudyField.getText();
+        List<Bio> users = readByStudy(major);
+        if (users == null || users.isEmpty()) { 
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information Dialog Box");
+            alert.setHeaderText("Error occured. Please try again");
+            alert.setContentText("Major was not found");
+            alert.showAndWait(); 
+        } 
+        else { 
+            setTableData(users);
+        }
+    }
+    
+    @FXML
+    void searchBySchoolyearAdvanced(ActionEvent event) {
+        System.out.println("Clicked");
+        String schoolyear = searchStudyField.getText();
+        List<Bio> users = readBySchoolyearAdvanced(schoolyear);
+        if (users == null || users.isEmpty()) { 
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information Dialog Box");
+            alert.setHeaderText("Error occured. Please try again");
+            alert.setContentText("Not found");
+            alert.showAndWait(); 
+        } 
+        else { 
+            setTableData(users);
+        }
+    }
+
             
     //*****CRUD code taken from class demo
            
@@ -89,7 +172,7 @@ public class FXMLDocumentController implements Initializable {
         
         // create this user bio to databse when create button is clicked       
         create(userBio);
-        label.setText("User bio created!");
+       
     }
 
     @FXML
@@ -101,7 +184,6 @@ public class FXMLDocumentController implements Initializable {
  
         Bio ubio = readById(id);
         System.out.println("Deleting this user's bio: "+ ubio.toString());
-        label.setText("User bio deleted!");
         delete(ubio);
     }
     
@@ -138,7 +220,6 @@ public class FXMLDocumentController implements Initializable {
         
         // create a student instance      
         List<Bio> ubio =  readByNameAndAge(name, age);
-        label.setText("Found!");
     }
 
     @FXML
@@ -152,9 +233,9 @@ public class FXMLDocumentController implements Initializable {
  
         // create a student instance      
         List<Bio> ubio =  readByStudy(major);
-        label.setText("Found!");
 
     }
+    
 
     @FXML
     void updateUserbio(ActionEvent event) {
@@ -192,7 +273,6 @@ public class FXMLDocumentController implements Initializable {
         
         // save this student to databse by calling Create operation        
         update(userBio);
-        label.setText("User bio has been updated!");
     }
 
     
@@ -201,12 +281,9 @@ public class FXMLDocumentController implements Initializable {
    @FXML
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
-        label.setText("Hello World!");
     }
     
-    @FXML
-    void search(ActionEvent event) {
-    }
+ 
 
     //EntityManager taken from class demo
     //Database manager
@@ -217,9 +294,16 @@ public class FXMLDocumentController implements Initializable {
         // loading data from database
         //database reference: "JulieHoFXMLPU"
     manager = (EntityManager) Persistence.createEntityManagerFactory("JulieHoFXMLPU").createEntityManager();
+    userID.setCellValueFactory(new PropertyValueFactory<>("id"));
+    userName.setCellValueFactory(new PropertyValueFactory<>("name"));
+    userAge.setCellValueFactory(new PropertyValueFactory<>("age"));
+    userSchoolyear.setCellValueFactory(new PropertyValueFactory<>("schoolyear"));
+    userMajor.setCellValueFactory(new PropertyValueFactory<>("major"));
+    userMinor.setCellValueFactory(new PropertyValueFactory<>("minor"));
+    
+    userTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }  
-    
-    
+  
        // Read Operations
     public List<Bio> readAll(){
         Query query = manager.createNamedQuery("Bio.findAll");
@@ -274,6 +358,20 @@ public class FXMLDocumentController implements Initializable {
         } 
         return users;      
     } 
+        
+        public List<Bio> readBySchoolyearAdvanced(String schoolyear) {
+        Query query = manager.createNamedQuery("Bio.findBySchoolyearAdvanced");
+
+        // setting query parameter
+        query.setParameter("schoolyear", schoolyear);
+
+        // execute query
+        List<Bio> users = query.getResultList();
+        for (Bio ubio : users) {
+            System.out.println(ubio.getId() + " " + ubio.getName() + " " + ubio.getAge() + " " + ubio.getSchoolyear() + " " + ubio.getMajor() + " " + ubio.getMinor());
+        } 
+        return users;    
+    }
     
     
     
